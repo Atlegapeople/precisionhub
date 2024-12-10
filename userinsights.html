@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Insights - Crosshair Media</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+        }
+
+        .sidebar {
+            background-color: #20232a;
+            color: white;
+            width: 250px;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            position: fixed;
+            border-right: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+            top: 0; /* Align top with header */
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+            color: #ecf0f1; /* Custom white color */
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: #ecf0f1; /* Custom white color */
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            color: #e74c3c; /* Custom red color */
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 270px; /* Adjust for sidebar width + padding */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: auto;
+        }
+
+        .header {
+            background-color: #20232a;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+        }
+
+        .header img {
+            height: 40px;
+            background-color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .header .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header .profile-section .profile-icon {
+            font-size: 30px;
+            color: #ecf0f1; /* Custom white color */
+        }
+
+        .header .profile-section .notification {
+            font-size: 24px;
+            color: #ecf0f1; /* Custom white color */
+        }
+
+        .header .search-bar {
+            flex: 1;
+            margin: 0 15px;
+        }
+
+        .header .search-bar input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Fine grey line */
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .header .logout-button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .header .logout-button:hover {
+            background-color: #c0392b;
+        }
+
+        .page-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #20232a;
+        }
+
+        .insights-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .insight-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            text-align: center;
+            min-width: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+        }
+
+        .insight-card h3 {
+            margin: 0;
+            font-size: 24px;
+            color: #20232a;
+        }
+
+        .insight-card p {
+            margin: 5px 0 0;
+            color: #555;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+        }
+
+        .chart-container h3 {
+            margin: 0 0 20px;
+            color: #20232a;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #20232a;
+            color: white;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* Custom Colors */
+        .custom-red {
+            color: #e74c3c;
+        }
+
+        .custom-grey {
+            color: #95a5a6;
+        }
+
+        .custom-black {
+            color: #2c3e50;
+        }
+
+        .custom-white {
+            color: #ecf0f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="userinsights.html">User Insights</a></li>
+            <li><a href="campaigns.html">Campaigns</a></li>
+            <li><a href="reports.html">Reports</a></li>
+            <li><a href="settings.html">Settings</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <img src="logo.webp" alt="Crosshair Media Logo">
+            <h1 class="custom-white">User Insights</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="profile-section">
+                <span class="profile-icon">&#x1F464;</span> <!-- Profile icon -->
+                <span class="notification">&#x1F514;</span> <!-- Notification icon -->
+                <button class="logout-button" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="page-title custom-black">User Behavior and Engagement Metrics</div>
+
+        <div class="insights-container">
+            <div class="insight-card">
+                <h3 class="custom-red">15,000</h3>
+                <p class="custom-grey">Active Users</p>
+            </div>
+            <div class="insight-card">
+                <canvas id="userGrowthChart" width="100" height="50"></canvas>
+                <p class="custom-grey">User Growth</p>
+            </div>
+            <div class="insight-card">
+                <h3 class="custom-red">20%</h3>
+                <p class="custom-grey">Retention Rate</p>
+            </div>
+            <div class="insight-card">
+                <canvas id="engagementRateChart" width="100" height="50"></canvas>
+                <p class="custom-grey">Engagement Rate</p>
+            </div>
+            <div class="insight-card">
+                <h3 class="custom-red">10 min</h3>
+                <p class="custom-grey">Average Session Duration</p>
+            </div>
+            <div class="insight-card">
+                <canvas id="sessionDurationChart" width="100" height="50"></canvas>
+                <p class="custom-grey">Session Duration Trend</p>
+            </div>
+            <div class="insight-card">
+                <h3 class="custom-red">5</h3>
+                <p class="custom-grey">Average Pages per Session</p>
+            </div>
+            <div class="insight-card">
+                <canvas id="pagesPerSessionChart" width="100" height="50"></canvas>
+                <p class="custom-grey">Pages per Session Trend</p>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">User Demographics</h3>
+                <canvas id="demographicsChart" width="200" height="100"></canvas>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">User Acquisition Channels</h3>
+                <canvas id="acquisitionChannelsChart" width="200" height="100"></canvas>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">User Engagement Over Time</h3>
+                <canvas id="engagementOverTimeChart" width="200" height="100"></canvas>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">User Retention Over Time</h3>
+                <canvas id="retentionOverTimeChart" width="200" height="100"></canvas>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 Crosshair Media. All Rights Reserved.</p>
+            <p>Contact us at support@crosshairmedia.com</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Function to handle logout
+        function logout() {
+            window.location.href = 'index.html'; // Redirect to the home screen
+        }
+
+        // User Growth Chart
+        const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
+        const userGrowthChart = new Chart(userGrowthCtx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'User Growth',
+                    data: [1000, 1500, 2000, 2500, 3000],
+                    borderColor: '#e74c3c',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Engagement Rate Chart
+        const engagementRateCtx = document.getElementById('engagementRateChart').getContext('2d');
+        const engagementRateChart = new Chart(engagementRateCtx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Engagement Rate',
+                    data: [10, 12, 15, 8, 20],
+                    borderColor: '#ecf0f1',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Session Duration Trend Chart
+        const sessionDurationCtx = document.getElementById('sessionDurationChart').getContext('2d');
+        const sessionDurationChart = new Chart(sessionDurationCtx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Session Duration',
+                    data: [8, 9, 10, 11, 12],
+                    borderColor: '#e74c3c',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Pages per Session Trend Chart
+        const pagesPerSessionCtx = document.getElementById('pagesPerSessionChart').getContext('2d');
+        const pagesPerSessionChart = new Chart(pagesPerSessionCtx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Pages per Session',
+                    data: [4, 5, 6, 5, 6],
+                    borderColor: '#e74c3c',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // User Demographics Chart
+        const demographicsCtx = document.getElementById('demographicsChart').getContext('2d');
+        const demographicsChart = new Chart(demographicsCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Male', 'Female', 'Other'],
+                datasets: [{
+                    label: 'Demographics',
+                    data: [55, 40, 5],
+                    backgroundColor: ['#e74c3c', '#2c3e50', '#ecf0f1'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // User Acquisition Channels Chart
+        const acquisitionChannelsCtx = document.getElementById('acquisitionChannelsChart').getContext('2d');
+        const acquisitionChannelsChart = new Chart(acquisitionChannelsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Organic', 'Paid', 'Social', 'Email'],
+                datasets: [{
+                    label: 'Acquisition Channels',
+                    data: [300, 250, 200, 150],
+                    backgroundColor: '#e74c3c'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // User Engagement Over Time Chart
+        const engagementOverTimeCtx = document.getElementById('engagementOverTimeChart').getContext('2d');
+        const engagementOverTimeChart = new Chart(engagementOverTimeCtx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Engagement Over Time',
+                    data: [10, 12, 15, 8, 20],
+                    borderColor: '#ecf0f1',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // User Retention Over Time Chart
+        const retentionOverTimeCtx = document.getElementById('retentionOverTimeChart').getContext('2d');
+        const retentionOverTimeChart = new Chart(retentionOverTimeCtx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Retention Over Time',
+                    data: [80, 85, 82, 88, 90],
+                    borderColor: '#e74c3c',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+    </script>
+</body>
+</html>

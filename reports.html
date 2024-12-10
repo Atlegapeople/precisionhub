@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Crosshair Media</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+        }
+
+        .sidebar {
+            background-color: #20232a;
+            color: white;
+            width: 250px;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            position: fixed;
+            border-right: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+            top: 0; /* Align top with header */
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+            color: #ecf0f1; /* Custom white color */
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: #ecf0f1; /* Custom white color */
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            color: #e74c3c; /* Custom red color */
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 270px; /* Adjust for sidebar width + padding */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: auto;
+        }
+
+        .header {
+            background-color: #20232a;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+        }
+
+        .header img {
+            height: 40px;
+            background-color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .header .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header .profile-section .profile-icon {
+            font-size: 30px;
+            color: #ecf0f1; /* Custom white color */
+        }
+
+        .header .profile-section .notification {
+            font-size: 24px;
+            color: #ecf0f1; /* Custom white color */
+        }
+
+        .header .search-bar {
+            flex: 1;
+            margin: 0 15px;
+        }
+
+        .header .search-bar input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Fine grey line */
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .header .logout-button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .header .logout-button:hover {
+            background-color: #c0392b;
+        }
+
+        .page-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #20232a;
+        }
+
+        .reports-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .report-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .report-card h3 {
+            margin: 0 0 10px;
+            font-size: 24px;
+            color: #20232a;
+        }
+
+        .report-card p {
+            margin: 0 0 20px;
+            color: #555;
+        }
+
+        .report-card .download-button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+            align-self: flex-start;
+        }
+
+        .report-card .download-button:hover {
+            background-color: #c0392b;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #20232a;
+            color: white;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* Custom Colors */
+        .custom-red {
+            color: #e74c3c;
+        }
+
+        .custom-grey {
+            color: #95a5a6;
+        }
+
+        .custom-black {
+            color: #2c3e50;
+        }
+
+        .custom-white {
+            color: #ecf0f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="user-insights.html">User Insights</a></li>
+            <li><a href="campaigns.html">Campaigns</a></li>
+            <li><a href="reports.html">Reports</a></li>
+            <li><a href="settings.html">Settings</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <img src="logo.webp" alt="Crosshair Media Logo">
+            <h1 class="custom-white">Reports</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="profile-section">
+                <span class="profile-icon">&#x1F464;</span> <!-- Profile icon -->
+                <span class="notification">&#x1F514;</span> <!-- Notification icon -->
+                <button class="logout-button" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="page-title custom-black">Available Reports</div>
+
+        <div class="reports-container">
+            <div class="report-card">
+                <h3 class="custom-black">Monthly Sales Report</h3>
+                <p>This report provides a detailed overview of monthly sales performance, including revenue, sales volume, and growth trends.</p>
+                <button class="download-button" onclick="downloadReport('monthly_sales_report.pdf')">Download</button>
+            </div>
+            <div class="report-card">
+                <h3 class="custom-black">User Engagement Report</h3>
+                <p>This report analyzes user engagement metrics across different platforms, including likes, shares, comments, and session duration.</p>
+                <button class="download-button" onclick="downloadReport('user_engagement_report.pdf')">Download</button>
+            </div>
+            <div class="report-card">
+                <h3 class="custom-black">Campaign Performance Report</h3>
+                <p>This report evaluates the performance of marketing campaigns, including click-through rates, conversion rates, and ROI.</p>
+                <button class="download-button" onclick="downloadReport('campaign_performance_report.pdf')">Download</button>
+            </div>
+            <div class="report-card">
+                <h3 class="custom-black">Financial Summary</h3>
+                <p>This report summarizes the financial performance of the company, including revenue, expenses, and profit margins.</p>
+                <button class="download-button" onclick="downloadReport('financial_summary.pdf')">Download</button>
+            </div>
+            <div class="report-card">
+                <h3 class="custom-black">Market Trends Analysis</h3>
+                <p>This report analyzes market trends and provides insights into industry developments, consumer behavior, and competitive landscape.</p>
+                <button class="download-button" onclick="downloadReport('market_trends_analysis.pdf')">Download</button>
+            </div>
+            <div class="report-card">
+                <h3 class="custom-black">Customer Satisfaction Report</h3>
+                <p>This report measures customer satisfaction levels through surveys, reviews, and feedback, highlighting areas for improvement.</p>
+                <button class="download-button" onclick="downloadReport('customer_satisfaction_report.pdf')">Download</button>
+            </div>
+            <div class="report-card">
+                <h3 class="custom-black">Website Traffic Report</h3>
+                <p>This report tracks website traffic, including visitor count, page views, bounce rate, and traffic sources.</p>
+                <button class="download-button" onclick="downloadReport('website_traffic_report.pdf')">Download</button>
+            </div>
+            <div class="report-card">
+                <h3 class="custom-black">Social Media Engagement Report</h3>
+                <p>This report assesses social media engagement across various platforms, including follower growth, post engagement, and content performance.</p>
+                <button class="download-button" onclick="downloadReport('social_media_engagement_report.pdf')">Download</button>
+            </div>
+            <div class="report-card">
+                <h3 class="custom-black">Product Launch Feedback</h3>
+                <p>This report compiles feedback from product launches, including customer reviews, sales performance, and market reception.</p>
+                <button class="download-button" onclick="downloadReport('product_launch_feedback.pdf')">Download</button>
+            </div>
+            <div class="report-card">
+                <h3 class="custom-black">Employee Performance Report</h3>
+                <p>This report evaluates employee performance, including productivity, goal achievement, and areas for development.</p>
+                <button class="download-button" onclick="downloadReport('employee_performance_report.pdf')">Download</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 Crosshair Media. All Rights Reserved.</p>
+            <p>Contact us at support@crosshairmedia.com</p>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle logout
+        function logout() {
+            window.location.href = 'index.html'; // Redirect to the home screen
+        }
+
+        // Function to handle report download
+        function downloadReport(fileName) {
+            // For demonstration purposes, we'll just show an alert
+            alert(`Downloading ${fileName}...`);
+            // In a real application, you would trigger a download of the file here
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Crosshair Media Precision Hub</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('background.png') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .login-container {
+            background-color: rgba(17, 17, 17, 0.7); /* Slightly more transparent */
+            color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 350px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeIn 1s ease-in-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-container h1 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #fff;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        .login-container h2 {
+            margin-bottom: 30px;
+            font-size: 18px;
+            color: #fff;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        .login-container .logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .login-container input, .login-container button {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            font-size: 18px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .login-container input:focus {
+            border-color: #f00;
+            box-shadow: 0 0 10px #f00;
+        }
+
+        .login-container button {
+            background-color: #f00;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.5);
+        }
+
+        .login-container button:hover {
+            background-color: #b00;
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.7);
+        }
+
+        .login-container button:active {
+            transform: scale(0.9);
+            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.3);
+        }
+
+        .login-container p {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #aaa;
+            text-shadow: 1px 1px 2px #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="logo2.png" alt="Crosshair Media Precision Hub Logo" class="logo">
+        <h1>Crosshair Media</h1>
+        <h1>Precision Hub</h1>
+        <h2>Data, Insights and Analytics</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Enter your name" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>&copy; 2024 Crosshair Media Precision Hub</p>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            if (username.trim()) {
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Please enter your name to login.');
+            }
+        });
+    </script>
+</body>
+</html>

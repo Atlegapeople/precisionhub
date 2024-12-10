@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaigns - Crosshair Media</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+        }
+
+        .sidebar {
+            background-color: #20232a;
+            color: white;
+            width: 250px;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            position: fixed;
+            border-right: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+            top: 0; /* Align top with header */
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+            color: #ecf0f1; /* Custom white color */
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: #ecf0f1; /* Custom white color */
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            color: #e74c3c; /* Custom red color */
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 270px; /* Adjust for sidebar width + padding */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: auto;
+        }
+
+        .header {
+            background-color: #20232a;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+        }
+
+        .header img {
+            height: 40px;
+            background-color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .header .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header .profile-section .profile-icon {
+            font-size: 30px;
+            color: #ecf0f1; /* Custom white color */
+        }
+
+        .header .profile-section .notification {
+            font-size: 24px;
+            color: #ecf0f1; /* Custom white color */
+        }
+
+        .header .search-bar {
+            flex: 1;
+            margin: 0 15px;
+        }
+
+        .header .search-bar input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Fine grey line */
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .header .logout-button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .header .logout-button:hover {
+            background-color: #c0392b;
+        }
+
+        .page-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #20232a;
+        }
+
+        .campaigns-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .campaign-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            text-align: center;
+            min-width: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+        }
+
+        .campaign-card h3 {
+            margin: 0;
+            font-size: 24px;
+            color: #20232a;
+        }
+
+        .campaign-card p {
+            margin: 5px 0 0;
+            color: #555;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chart-container h3 {
+            margin: 0 0 20px;
+            color: #20232a;
+        }
+
+        .chart-container .description {
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #20232a;
+            color: white;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* Custom Colors */
+        .custom-red {
+            color: #e74c3c;
+        }
+
+        .custom-grey {
+            color: #95a5a6;
+        }
+
+        .custom-black {
+            color: #2c3e50;
+        }
+
+        .custom-white {
+            color: #ecf0f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="userinsights.html">User Insights</a></li>
+            <li><a href="campaigns.html">Campaigns</a></li>
+            <li><a href="reports.html">Reports</a></li>
+            <li><a href="settings.html">Settings</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <img src="logo.webp" alt="Crosshair Media Logo">
+            <h1 class="custom-white">Campaigns</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="profile-section">
+                <span class="profile-icon">&#x1F464;</span> <!-- Profile icon -->
+                <span class="notification">&#x1F514;</span> <!-- Notification icon -->
+                <button class="logout-button" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="page-title custom-black">Social Media Engagement and Reporting</div>
+
+        <div class="campaigns-container">
+            <div class="campaign-card">
+                <h3 class="custom-red">TikTok</h3>
+                <canvas id="tiktokEngagementChart" width="200" height="100"></canvas>
+                <p class="custom-grey">Engagement Over Time</p>
+            </div>
+            <div class="campaign-card">
+                <h3 class="custom-red">Instagram</h3>
+                <canvas id="instagramEngagementChart" width="200" height="100"></canvas>
+                <p class="custom-grey">Engagement Over Time</p>
+            </div>
+            <div class="campaign-card">
+                <h3 class="custom-red">Twitter</h3>
+                <canvas id="twitterEngagementChart" width="200" height="100"></canvas>
+                <p class="custom-grey">Engagement Over Time</p>
+            </div>
+            <div class="campaign-card">
+                <h3 class="custom-red">Other Platforms</h3>
+                <canvas id="otherPlatformsChart" width="200" height="100"></canvas>
+                <p class="custom-grey">Engagement Over Time</p>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">TikTok Engagement</h3>
+                <canvas id="tiktokChart" width="200" height="100"></canvas>
+                <div class="description">
+                    <p>This chart shows the engagement metrics for TikTok over the past month. The data includes likes, shares, and comments.</p>
+                </div>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">Instagram Engagement</h3>
+                <canvas id="instagramChart" width="200" height="100"></canvas>
+                <div class="description">
+                    <p>This chart shows the engagement metrics for Instagram over the past month. The data includes likes, shares, and comments.</p>
+                </div>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">Twitter Engagement</h3>
+                <canvas id="twitterChart" width="200" height="100"></canvas>
+                <div class="description">
+                    <p>This chart shows the engagement metrics for Twitter over the past month. The data includes likes, retweets, and replies.</p>
+                </div>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">Other Platforms Engagement</h3>
+                <canvas id="otherPlatformsChart" width="200" height="100"></canvas>
+                <div class="description">
+                    <p>This chart shows the engagement metrics for other platforms over the past month. The data includes likes, shares, and comments.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 Crosshair Media. All Rights Reserved.</p>
+            <p>Contact us at support@crosshairmedia.com</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Function to handle logout
+        function logout() {
+            window.location.href = 'index.html'; // Redirect to the home screen
+        }
+
+        // TikTok Engagement Chart
+        const tiktokCtx = document.getElementById('tiktokEngagementChart').getContext('2d');
+        const tiktokEngagementChart = new Chart(tiktokCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Engagement',
+                    data: [100, 150, 200, 250],
+                    borderColor: '#e74c3c',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Instagram Engagement Chart
+        const instagramCtx = document.getElementById('instagramEngagementChart').getContext('2d');
+        const instagramEngagementChart = new Chart(instagramCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Engagement',
+                    data: [120, 140, 160, 180],
+                    borderColor: '#2c3e50',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Twitter Engagement Chart
+        const twitterCtx = document.getElementById('twitterEngagementChart').getContext('2d');
+        const twitterEngagementChart = new Chart(twitterCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Engagement',
+                    data: [80, 100, 120, 140],
+                    borderColor: '#ecf0f1',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Other Platforms Engagement Chart
+        const otherPlatformsCtx = document.getElementById('otherPlatformsChart').getContext('2d');
+        const otherPlatformsChart = new Chart(otherPlatformsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Engagement',
+                    data: [90, 110, 130, 150],
+                    borderColor: '#95a5a6',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // TikTok Chart
+        const tiktokChartCtx = document.getElementById('tiktokChart').getContext('2d');
+        const tiktokChart = new Chart(tiktokChartCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Likes', 'Shares', 'Comments'],
+                datasets: [{
+                    label: 'Engagement Metrics',
+                    data: [300, 200, 100],
+                    backgroundColor: '#e74c3c'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Instagram Chart
+        const instagramChartCtx = document.getElementById('instagramChart').getContext('2d');
+        const instagramChart = new Chart(instagramChartCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Likes', 'Shares', 'Comments'],
+                datasets: [{
+                    label: 'Engagement Metrics',
+                    data: [250, 150, 150],
+                    backgroundColor: '#2c3e50'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Twitter Chart
+        const twitterChartCtx = document.getElementById('twitterChart').getContext('2d');
+        const twitterChart = new Chart(twitterChartCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Likes', 'Retweets', 'Replies'],
+                datasets: [{
+                    label: 'Engagement Metrics',
+                    data: [200, 100, 200],
+                    backgroundColor: '#ecf0f1'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Other Platforms Chart
+        const otherPlatformsChartCtx = document.getElementById('otherPlatformsChart').getContext('2d');
+        const otherPlatformsChart = new Chart(otherPlatformsChartCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Likes', 'Shares', 'Comments'],
+                datasets: [{
+                    label: 'Engagement Metrics',
+                    data: [150, 250, 100],
+                    backgroundColor: '#95a5a6'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+    </script>
+</body>
+</html>

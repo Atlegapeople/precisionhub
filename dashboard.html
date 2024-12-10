@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crosshair Media Client Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+        }
+
+        .sidebar {
+            background-color: #20232a;
+            color: white;
+            width: 250px;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            position: fixed;
+            border-right: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+            top: 0; /* Align top with header */
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+            color: #ecf0f1; /* Custom white color */
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: #ecf0f1; /* Custom white color */
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            color: #e74c3c; /* Custom red color */
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 270px; /* Adjust for sidebar width + padding */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: auto;
+        }
+
+        .header {
+            background-color: #20232a;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+        }
+
+        .header img {
+            height: 40px;
+            background-color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .header .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header .profile-section .profile-icon {
+            font-size: 30px;
+            color: #ecf0f1; /* Custom white color */
+        }
+
+        .header .profile-section .notification {
+            font-size: 24px;
+            color: #ecf0f1; /* Custom white color */
+        }
+
+        .header .search-bar {
+            flex: 1;
+            margin: 0 15px;
+        }
+
+        .header .search-bar input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Fine grey line */
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .header .logout-button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .header .logout-button:hover {
+            background-color: #c0392b;
+        }
+
+        .dashboard-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #20232a;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            text-align: center;
+            min-width: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 32px;
+            color: #20232a;
+        }
+
+        .stat-card p {
+            margin: 5px 0 0;
+            color: #555;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+        }
+
+        .chart-container h3 {
+            margin: 0 0 20px;
+            color: #20232a;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #20232a;
+            color: white;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2); /* Fine grey line */
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* Custom Colors */
+        .custom-red {
+            color: #e74c3c;
+        }
+
+        .custom-grey {
+            color: #95a5a6;
+        }
+
+        .custom-black {
+            color: #2c3e50;
+        }
+
+        .custom-white {
+            color: #ecf0f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="userinsights.html">User Insights</a></li>
+            <li><a href="campaigns.html">Campaigns</a></li>
+            <li><a href="reports.html">Reports</a></li>
+            <li><a href="settings.html">Settings</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <img src="logo.webp" alt="Crosshair Media Logo">
+            <h1 class="custom-white">Client Dashboard</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="profile-section">
+                <span class="profile-icon">&#x1F464;</span> <!-- Profile icon -->
+                <span class="notification">&#x1F514;</span> <!-- Notification icon -->
+                <button class="logout-button" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="dashboard-title custom-black" id="welcome-message">Welcome Back, Client Name</div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3 class="custom-red">25,000</h3>
+                <p class="custom-grey">Total Users</p>
+            </div>
+            <div class="stat-card">
+                <canvas id="engagementRateChart" width="100" height="50"></canvas>
+                <p class="custom-grey">Engagement Rate</p>
+            </div>
+            <div class="stat-card">
+                <h3 class="custom-red">8</h3>
+                <p class="custom-grey">Active Campaigns</p>
+            </div>
+            <div class="stat-card">
+                <canvas id="eCommerceRevenueChart" width="100" height="50"></canvas>
+                <p class="custom-grey">E-Commerce Revenue</p>
+            </div>
+            <div class="stat-card">
+                <h3 class="custom-red">R20,000</h3>
+                <p class="custom-grey">Data Insights Revenue</p>
+            </div>
+            <div class="stat-card">
+                <h3 class="custom-red">R75,000</h3>
+                <p class="custom-grey">Sponsored Content Revenue</p>
+            </div>
+            <div class="stat-card">
+                <h3 class="custom-red">R75,000</h3>
+                <p class="custom-grey">Recruitment Revenue</p>
+            </div>
+            <div class="stat-card">
+                <h3 class="custom-red">Compliant</h3>
+                <p class="custom-grey">POPIA Compliance</p>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">Demographics Breakdown</h3>
+                <canvas id="demographicsChart" width="200" height="100"></canvas>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">Campaign Performance</h3>
+                <canvas id="campaignChart" width="200" height="100"></canvas>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">Monthly Engagement</h3>
+                <canvas id="engagementChart" width="200" height="100"></canvas>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">Top Products</h3>
+                <canvas id="productsChart" width="200" height="100"></canvas>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">User Registrations Over Time</h3>
+                <canvas id="userGrowthChart" width="200" height="100"></canvas>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">Purchase Conversion Rates</h3>
+                <canvas id="conversionChart" width="200" height="100"></canvas>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">User Engagement Heatmap</h3>
+                <canvas id="heatmapChart" width="200" height="100"></canvas>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">Psychographic Segmentation</h3>
+                <canvas id="psychographicChart" width="200" height="100"></canvas>
+            </div>
+
+            <div class="chart-container" style="width: 45%;">
+                <h3 class="custom-black">Financial Projections</h3>
+                <canvas id="financialChart" width="200" height="100"></canvas>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 Crosshair Media. All Rights Reserved.</p>
+            <p>Contact us at support@crosshairmedia.com</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Function to handle logout
+        function logout() {
+            window.location.href = 'index.html'; // Redirect to the home screen
+        }
+
+        // Function to set the welcome message
+        function setWelcomeMessage(name) {
+            document.getElementById('welcome-message').innerText = `Welcome Back, ${name}`;
+        }
+
+        // Example usage: setWelcomeMessage('John Doe');
+        // You can call this function with the user's name after login
+
+        // Demographics Breakdown Chart
+        const demographicsCtx = document.getElementById('demographicsChart').getContext('2d');
+        const demographicsChart = new Chart(demographicsCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Male', 'Female', 'Other'],
+                datasets: [{
+                    label: 'Demographics',
+                    data: [55, 40, 5],
+                    backgroundColor: ['#e74c3c', '#2c3e50', '#ecf0f1'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Campaign Performance Chart
+        const campaignCtx = document.getElementById('campaignChart').getContext('2d');
+        const campaignChart = new Chart(campaignCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Campaign 1', 'Campaign 2', 'Campaign 3', 'Campaign 4'],
+                datasets: [{
+                    label: 'Clicks',
+                    data: [300, 500, 200, 400],
+                    backgroundColor: '#e74c3c'
+                }, {
+                    label: 'Conversions',
+                    data: [50, 100, 40, 80],
+                    backgroundColor: '#2c3e50'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Monthly Engagement Chart
+        const engagementCtx = document.getElementById('engagementChart').getContext('2d');
+        const engagementChart = new Chart(engagementCtx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Engagement Rate',
+                    data: [10, 12, 15, 8, 20],
+                    borderColor: '#ecf0f1',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Top Products Chart
+        const productsCtx = document.getElementById('productsChart').getContext('2d');
+        const productsChart = new Chart(productsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Product A', 'Product B', 'Product C', 'Product D'],
+                datasets: [{
+                    label: 'Sales',
+                    data: [120, 150, 90, 200],
+                    backgroundColor: '#2c3e50'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // User Growth Chart
+        const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
+        const userGrowthChart = new Chart(userGrowthCtx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'User Registrations',
+                    data: [500, 700, 900, 1100, 1300],
+                    borderColor: '#e74c3c',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Conversion Rates Chart
+        const conversionCtx = document.getElementById('conversionChart').getContext('2d');
+        const conversionChart = new Chart(conversionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Conversion Rate',
+                    data: [5, 6, 7, 8, 9],
+                    backgroundColor: '#e74c3c'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // User Engagement Heatmap Chart
+        const heatmapCtx = document.getElementById('heatmapChart').getContext('2d');
+        const heatmapChart = new Chart(heatmapCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Section A', 'Section B', 'Section C', 'Section D'],
+                datasets: [{
+                    label: 'Engagement Levels',
+                    data: [20, 30, 40, 50],
+                    backgroundColor: '#e74c3c'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Psychographic Segmentation Chart
+        const psychographicCtx = document.getElementById('psychographicChart').getContext('2d');
+        const psychographicChart = new Chart(psychographicCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Interest A', 'Interest B', 'Interest C', 'Interest D'],
+                datasets: [{
+                    label: 'Psychographic Data',
+                    data: [15, 25, 35, 45],
+                    backgroundColor: '#e74c3c'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Financial Projections Chart
+        const financialCtx = document.getElementById('financialChart').getContext('2d');
+        const financialChart = new Chart(financialCtx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Financial Projections',
+                    data: [50000, 60000, 70000, 80000, 90000],
+                    borderColor: '#e74c3c',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Engagement Rate Line Chart
+        const engagementRateCtx = document.getElementById('engagementRateChart').getContext('2d');
+        const engagementRateChart = new Chart(engagementRateCtx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Engagement Rate',
+                    data: [10, 12, 15, 8, 20],
+                    borderColor: '#ecf0f1',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // E-Commerce Revenue Line Chart
+        const eCommerceRevenueCtx = document.getElementById('eCommerceRevenueChart').getContext('2d');
+        const eCommerceRevenueChart = new Chart(eCommerceRevenueCtx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'E-Commerce Revenue',
+                    data: [50000, 60000, 70000, 80000, 90000],
+                    borderColor: '#e74c3c',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+    </script>
+</body>
+</html>
